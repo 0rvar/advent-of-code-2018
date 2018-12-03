@@ -25,7 +25,7 @@ fn main() {
 
     let mut assigned_square_inches = HashSet::new();
     let mut overlapped_square_inches = HashSet::new();
-    for rect in rectangles {
+    for rect in &rectangles {
         for x in rect.left..(rect.left + rect.width) {
             for y in rect.top..(rect.top + rect.height) {
                 let inch = SquareInch { x, y };
@@ -41,6 +41,23 @@ fn main() {
         "Part 1: {} overlapped square inches",
         overlapped_square_inches.len()
     );
+
+    for rect in rectangles {
+        let mut any_inch_overlaps = false;
+        for x in rect.left..(rect.left + rect.width) {
+            for y in rect.top..(rect.top + rect.height) {
+                let inch = SquareInch { x, y };
+                if overlapped_square_inches.contains(&inch) {
+                    any_inch_overlaps = true;
+                    break;
+                }
+            }
+        }
+        if !any_inch_overlaps {
+            println!("Part 2: {} does not overlap anyone else", rect.id);
+            break;
+        }
+    }
 }
 
 fn parse_line(line: &str) -> Rect {
