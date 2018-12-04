@@ -11,8 +11,8 @@ fn main() {
     let mut best_score = 0usize;
     let mut best_reference = "".to_string();
     let mut best_id = "".to_string();
-    for reference_id in box_ids.clone() {
-        for box_id in box_ids.clone() {
+    for reference_id in &box_ids {
+        for box_id in &box_ids {
             if reference_id == box_id {
                 continue;
             }
