@@ -73,6 +73,9 @@ fn main() {
     let mut max_asleep_minutes = 0usize;
     let mut max_asleep_minutes_guard_id = 0usize;
     let mut max_asleep_minutes_time = 0usize;
+    let mut max_asleep_specific_minute_count = 0usize;
+    let mut max_asleep_specific_minute_guard_id = 0usize;
+    let mut max_asleep_specific_minute_time = 0usize;
     for (guard_id, guard_events) in grouped {
         let mut go_to_sleep_minute = 0usize;
         let mut asleep_minutes: HashMap<usize, usize> = HashMap::new();
@@ -92,34 +95,37 @@ fn main() {
         }
         let total_minutes_asleep: usize = asleep_minutes.values().sum();
         let guard_popular_minute = if asleep_minutes.len() > 0 {
-            let mut max = 0usize;
-            let mut max_minute = 0usize;
-            for (minute, x) in asleep_minutes {
-                if x > max {
-                    max = x;
-                    max_minute = minute;
-                }
-            }
-            if guard_id == 2287 {
-                println!("{}, {}", max, max_minute);
-            }
-            max_minute
+            asleep_minutes.iter().max_by_key(|x| x.1).unwrap()
         } else {
-            0
+            (&0, &0)
         };
         if total_minutes_asleep > max_asleep_minutes {
             max_asleep_minutes = total_minutes_asleep;
-            max_asleep_minutes_time = guard_popular_minute;
+            max_asleep_minutes_time = *guard_popular_minute.0;
             max_asleep_minutes_guard_id = guard_id;
+        }
+
+        if *guard_popular_minute.1 > max_asleep_specific_minute_count {
+            max_asleep_specific_minute_count = *guard_popular_minute.1;
+            max_asleep_specific_minute_time = *guard_popular_minute.0;
+            max_asleep_specific_minute_guard_id = guard_id;
         }
     }
 
     println!(
-        "minutes: {}, most popular minute: {}, guard_id: {}, (*: {})",
+        "Part 1: minutes: {}, most popular minute: {}, guard_id: {}, (*: {})",
         max_asleep_minutes,
         max_asleep_minutes_time,
         max_asleep_minutes_guard_id,
         max_asleep_minutes_guard_id * max_asleep_minutes_time
+    );
+
+    println!(
+        "Part 2: minutes: {}, most popular minute: {}, guard_id: {}, (*: {})",
+        max_asleep_specific_minute_count,
+        max_asleep_specific_minute_time,
+        max_asleep_specific_minute_guard_id,
+        max_asleep_specific_minute_guard_id * max_asleep_specific_minute_time
     );
 }
 
