@@ -3,8 +3,28 @@ use std::collections::HashSet;
 
 fn main() {
     let input = include_str!("input.txt").trim();
-    let reacted = polymer_reaction(input);
-    println!("Part 1: {}", reacted.len());
+    // println!("Part 1: {}", polymer_reaction(input).len());
+
+    for unit_to_remove in find_units(input) {
+        let filtered = input
+            .chars()
+            .filter(|&x| x != unit_to_remove)
+            .collect::<String>();
+        println!(
+            "Part 2: removing {} gives len {}",
+            unit_to_remove,
+            polymer_reaction(&filtered).len()
+        );
+    }
+}
+
+fn find_units(polymer: &str) -> Vec<char> {
+    let mut pairs: HashSet<char> = HashSet::new();
+    for x in polymer.chars() {
+        pairs.insert(x.to_ascii_lowercase());
+    }
+
+    pairs.iter().map(|x| *x).collect::<Vec<char>>()
 }
 
 fn polymer_reaction(polymer: &str) -> String {
@@ -18,7 +38,6 @@ fn polymer_reaction(polymer: &str) -> String {
         char_lookup.insert(i, x);
     }
     'outer: loop {
-        println!("len: {}", polymer_len - removed_indices.len());
         'scan: for i in 0..(polymer_len - 1) {
             if removed_indices.contains(&i) {
                 continue;
