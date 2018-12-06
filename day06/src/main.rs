@@ -64,6 +64,21 @@ fn main() {
         "Part 1: {}",
         region_sizes.iter().max_by_key(|&(_, v)| v).unwrap().1
     );
+
+    let mut area_size = 0usize;
+    for x in min_x..=max_x {
+        for y in min_y..=max_y {
+            let mut total_distance = 0usize;
+            for coordinate in &input {
+                let distance: usize = manhattan_distance(coordinate.0, coordinate.1, x, y);
+                total_distance += distance;
+            }
+            if total_distance < 10000 {
+                area_size += 1;
+            }
+        }
+    }
+    println!("Part 2: {}", area_size);
 }
 
 fn manhattan_distance(x1: isize, y1: isize, x2: isize, y2: isize) -> usize {
