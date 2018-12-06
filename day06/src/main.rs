@@ -29,10 +29,10 @@ fn main() {
     let mut map: HashMap<Position, Claim> = HashMap::new();
     let mut region_sizes: HashMap<usize, usize> = HashMap::new();
     let mut infinite_area_ids = HashSet::new();
-    let min_x = -100;
-    let min_y = -100;
-    let max_x = 1000;
-    let max_y = 1000;
+    let min_x = 0;
+    let min_y = 0;
+    let max_x = 500;
+    let max_y = 500;
     for x in min_x..=max_x {
         for y in min_y..=max_y {
             let mut claim = Claim {
@@ -57,21 +57,13 @@ fn main() {
             }
         }
     }
-
-    // let mut areas = HashMap::new();
-    // for claim in map
-    //     .values()
-    //     .filter(|claim| claim.id < 999 && !infinite_area_ids.contains(&claim.id))
-    // {
-    //     let area_entry = areas.entry(claim.id).or_insert(0usize);
-    //     *area_entry += 1;
-    // }
     for x in &infinite_area_ids {
         region_sizes.remove(&(*x as usize));
     }
-    println!("{:?}", infinite_area_ids);
-    println!("{:?}", region_sizes);
-    println!("{:?}", region_sizes.iter().max_by_key(|&(_, v)| v).unwrap());
+    println!(
+        "Part 1: {}",
+        region_sizes.iter().max_by_key(|&(_, v)| v).unwrap().1
+    );
 }
 
 fn manhattan_distance(x1: isize, y1: isize, x2: isize, y2: isize) -> usize {
