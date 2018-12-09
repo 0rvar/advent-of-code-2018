@@ -1,12 +1,13 @@
+use skiplist::SkipList;
+
 fn main() {
     // input: 426 players; last marble is worth 72058 points
     const NUM_PLAYERS: usize = 426;
-    const MAX_MARBLE: usize = 72058;
-    // const NUM_PLAYERS: usize = 10;
-    // const MAX_MARBLE: usize = 1618;
+    const MAX_MARBLE: usize = 72058 * 100;
 
     let mut scores = [0usize; NUM_PLAYERS];
-    let mut board: Vec<usize> = vec![0];
+    let mut board: SkipList<usize> = SkipList::new();
+    board.push_back(0);
     let mut current_player = 0;
     let mut current_position = 0;
     for current_marble in 1..=MAX_MARBLE {
@@ -32,11 +33,10 @@ fn main() {
                 }
                 x
             };
-            board.insert(next_position, current_marble);
+            board.insert(current_marble, next_position);
             current_position = next_position;
         }
-        // println!("{}: {:?} - {:?}", current_player, board, scores);
         current_player = (current_player + 1) % NUM_PLAYERS;
     }
-    println!("Part 1: {}", scores.iter().max().unwrap());
+    println!("Part 2: {}", scores.iter().max().unwrap());
 }
