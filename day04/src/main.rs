@@ -1,4 +1,3 @@
-use itertools::Itertools;
 use regex::{Captures, Regex};
 use std::collections::{HashMap, HashSet};
 
