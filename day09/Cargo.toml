@@ -5,4 +5,3 @@ authors = ["Orvar Segerström <orvarsegerstrom@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-skiplist = "0.2.10"
