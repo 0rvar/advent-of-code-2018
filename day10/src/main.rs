@@ -38,7 +38,7 @@ fn main() {
     loop {
         points = tick(&points);
         seconds_elapsed += 1;
-        if max_distance(&points) < 5 {
+        if stop_condition(&points) {
             break;
         }
     }
@@ -47,36 +47,16 @@ fn main() {
 }
 
 fn print_points(points: &[Point]) {
-    let (min_x, min_y, max_x, max_y) = {
-        let mut min_x = 10000;
-        let mut min_y = 10000;
-        let mut max_x = -10000;
-        let mut max_y = -10000;
-        for p in points {
-            if p.x < min_x {
-                min_x = p.x;
-            }
-            if p.y < min_y {
-                min_y = p.y;
-            }
-            if p.x > max_x {
-                max_x = p.x;
-            }
-            if p.y > max_y {
-                max_y = p.y;
-            }
-        }
-        (min_x, min_y, max_x, max_y)
-    };
-    let mut cloud = HashSet::new();
-    for p in points {
-        cloud.insert(Position { x: p.x, y: p.y });
-    }
+    let (min_x, min_y, max_x, max_y) = bounding_rect(points);
+    let lookup = points
+        .iter()
+        .map(|p| Position { x: p.x, y: p.y })
+        .collect::<HashSet<_>>();
     for y in min_y..=max_y {
         for x in min_x..=max_x {
             print!(
                 "{}",
-                if cloud.contains(&Position { x, y }) {
+                if lookup.contains(&Position { x, y }) {
                     "#"
                 } else {
                     " "
@@ -99,7 +79,7 @@ fn tick(points: &[Point]) -> Vec<Point> {
         .collect()
 }
 
-fn max_distance(points: &[Point]) -> usize {
+fn stop_condition(points: &[Point]) -> bool {
     let mut max_min = 0;
     for (i1, p1) in points.iter().enumerate() {
         let mut min = 999;
@@ -119,9 +99,31 @@ fn max_distance(points: &[Point]) -> usize {
             }
         }
     }
-    max_min
+    max_min < 3
 }
 
 fn manhattan_distance(x1: isize, y1: isize, x2: isize, y2: isize) -> usize {
     (x1 as isize - x2 as isize).abs() as usize + (y1 as isize - y2 as isize).abs() as usize
+}
+
+fn bounding_rect(points: &[Point]) -> (isize, isize, isize, isize) {
+    let mut min_x = 10000;
+    let mut min_y = 10000;
+    let mut max_x = -10000;
+    let mut max_y = -10000;
+    for p in points {
+        if p.x < min_x {
+            min_x = p.x;
+        }
+        if p.y < min_y {
+            min_y = p.y;
+        }
+        if p.x > max_x {
+            max_x = p.x;
+        }
+        if p.y > max_y {
+            max_y = p.y;
+        }
+    }
+    (min_x, min_y, max_x, max_y)
 }
