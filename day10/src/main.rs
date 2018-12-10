@@ -34,13 +34,16 @@ fn main() {
         .collect::<Vec<Point>>();
 
     let mut points = input.clone();
+    let mut seconds_elapsed = 0;
     loop {
         points = tick(&points);
+        seconds_elapsed += 1;
         if max_distance(&points) < 5 {
             break;
         }
     }
     print_points(&points);
+    println!("Elapsed: {} seconds", seconds_elapsed);
 }
 
 fn print_points(points: &[Point]) {
