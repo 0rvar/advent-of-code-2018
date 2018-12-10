@@ -1,17 +1,12 @@
+use shared::*;
 use std::collections::HashSet;
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
-struct Point {
+pub struct Point {
     x: isize,
     y: isize,
     vx: isize,
     vy: isize,
-}
-
-#[derive(Debug, PartialEq, Eq, Hash, Clone)]
-struct Position {
-    x: isize,
-    y: isize,
 }
 
 fn main() {
@@ -100,10 +95,6 @@ fn stop_condition(points: &[Point]) -> bool {
         }
     }
     max_min < 3
-}
-
-fn manhattan_distance(x1: isize, y1: isize, x2: isize, y2: isize) -> usize {
-    (x1 as isize - x2 as isize).abs() as usize + (y1 as isize - y2 as isize).abs() as usize
 }
 
 fn bounding_rect(points: &[Point]) -> (isize, isize, isize, isize) {

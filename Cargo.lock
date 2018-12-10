@@ -12,6 +12,14 @@ version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "day-template"
+version = "0.1.0"
+dependencies = [
+ "regex 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "shared 0.1.0",
+]
+
+[[package]]
 name = "day01"
 version = "0.1.0"
 
@@ -24,6 +32,7 @@ name = "day03"
 version = "0.1.0"
 dependencies = [
  "regex 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "shared 0.1.0",
 ]
 
 [[package]]
@@ -31,6 +40,7 @@ name = "day04"
 version = "0.1.0"
 dependencies = [
  "regex 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "shared 0.1.0",
 ]
 
 [[package]]
@@ -40,6 +50,9 @@ version = "0.1.0"
 [[package]]
 name = "day06"
 version = "0.1.0"
+dependencies = [
+ "shared 0.1.0",
+]
 
 [[package]]
 name = "day07"
@@ -56,6 +69,9 @@ version = "0.1.0"
 [[package]]
 name = "day10"
 version = "0.1.0"
+dependencies = [
+ "shared 0.1.0",
+]
 
 [[package]]
 name = "lazy_static"
@@ -95,6 +111,13 @@ version = "0.6.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "ucd-util 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "shared"
+version = "0.1.0"
+dependencies = [
+ "regex 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

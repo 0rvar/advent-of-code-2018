@@ -1,8 +1,8 @@
 [package]
-name = "day10"
+name = "shared"
 version = "0.1.0"
 authors = ["Orvar Segerström <orvarsegerstrom@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-shared = { path = "../shared" }
+regex = "*"

@@ -1,4 +1,5 @@
-use regex::{Captures, Regex};
+use shared::*;
+use regex::Regex;
 use std::collections::{HashMap, HashSet};
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
@@ -128,10 +129,4 @@ fn main() {
     );
 }
 
-fn get_number_match(capture: &Captures<'_>, index: usize) -> usize {
-    capture.get(index).unwrap().as_str().parse().unwrap()
-}
 
-fn get_string_match<'l>(capture: &Captures<'l>, index: usize) -> &'l str {
-    capture.get(index).unwrap().as_str()
-}

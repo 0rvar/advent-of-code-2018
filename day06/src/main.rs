@@ -1,11 +1,6 @@
+use shared::*;
 use std::collections::HashMap;
 use std::collections::HashSet;
-
-#[derive(Debug, PartialEq, Eq, Hash, Clone)]
-struct Position {
-    x: isize,
-    y: isize,
-}
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
 struct Claim {
@@ -79,16 +74,4 @@ fn main() {
         }
     }
     println!("Part 2: {}", area_size);
-}
-
-fn manhattan_distance(x1: isize, y1: isize, x2: isize, y2: isize) -> usize {
-    (x1 as isize - x2 as isize).abs() as usize + (y1 as isize - y2 as isize).abs() as usize
-}
-
-#[test]
-fn test_manhattan_distance() {
-    assert_eq!(manhattan_distance(0, 0, 1, 1), 2);
-    assert_eq!(manhattan_distance(0, 1, 1, 1), 1);
-    assert_eq!(manhattan_distance(1, 1, 1, 1), 0);
-    assert_eq!(manhattan_distance(1, 1, 3, 0), 3);
 }

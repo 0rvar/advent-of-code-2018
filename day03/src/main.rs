@@ -1,4 +1,5 @@
-use regex::{Captures, Regex};
+use regex::Regex;
+use shared::*;
 use std::collections::HashSet;
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
@@ -75,10 +76,6 @@ fn parse_line(line: &str) -> Rect {
         width,
         height,
     }
-}
-
-fn get_number_match(capture: &Captures<'_>, index: usize) -> usize {
-    capture.get(index).unwrap().as_str().parse().unwrap()
 }
 
 #[test]
