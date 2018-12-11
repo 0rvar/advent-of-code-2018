@@ -77,17 +77,7 @@ fn test_calculate_power_level() {
 }
 
 fn get_hundred_digit(number: usize) -> usize {
-    let digits = number.to_string().chars().collect::<Vec<char>>();
-    if digits.len() > 2 {
-        digits
-            .get(digits.len() - 3)
-            .unwrap_or(&'0')
-            .to_string()
-            .parse::<usize>()
-            .unwrap()
-    } else {
-        0
-    }
+    number / 100 % 10
 }
 
 #[test]
