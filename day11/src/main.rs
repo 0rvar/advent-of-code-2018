@@ -1,5 +1,3 @@
-use shared::*;
-
 fn main() {
     const SERIAL_NUMBER: usize = 8868;
 
@@ -21,6 +19,50 @@ fn main() {
             }
         }
         println!("Part 1: max {} at {:?}", max_value, max_coord);
+    }
+
+    {
+        let mut power_level_cache = [0isize; 300 * 300];
+        for x in 1..=300 {
+            for y in 1..=300 {
+                power_level_cache[(y - 1) * 300 + (x - 1)] =
+                    calculate_power_level(x, y, SERIAL_NUMBER);
+            }
+        }
+
+        println!("Got power levels");
+
+        let mut max_value = 0;
+        let mut best_size = 0;
+        let mut max_coord = (0, 0);
+        for size in 1..=299 {
+            for x in 1..=(300 - size) {
+                for y in 1..=(300 - size) {
+                    let mut value = 0;
+                    for offset_y in 0..size {
+                        let slice_start = (y - 1 + offset_y) * 300 + (x - 1);
+                        let slice_end = (y - 1 + offset_y) * 300 + (x - 1 + size);
+                        value += power_level_cache[slice_start..slice_end]
+                            .iter()
+                            .sum::<isize>();
+                    }
+                    if value > max_value {
+                        max_value = value;
+                        max_coord = (x, y);
+                        best_size = size;
+                        println!(
+                            "Part 2: current max {} at {},{},{}",
+                            max_value, x, y, best_size
+                        );
+                    }
+                }
+            }
+        }
+        // wrong: 228,276,11
+        println!(
+            "Part 2: max {} at {},{},{}",
+            max_value, max_coord.0, max_coord.1, best_size
+        );
     }
 }
 
