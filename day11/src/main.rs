@@ -30,8 +30,6 @@ fn main() {
             }
         }
 
-        println!("Got power levels");
-
         let mut max_value = 0;
         let mut best_size = 0;
         let mut max_coord = (0, 0);
@@ -50,15 +48,10 @@ fn main() {
                         max_value = value;
                         max_coord = (x, y);
                         best_size = size;
-                        println!(
-                            "Part 2: current max {} at {},{},{}",
-                            max_value, x, y, best_size
-                        );
                     }
                 }
             }
         }
-        // wrong: 228,276,11
         println!(
             "Part 2: max {} at {},{},{}",
             max_value, max_coord.0, max_coord.1, best_size
