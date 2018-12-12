@@ -45,12 +45,12 @@ fn main() {
     let mut start_index: isize = 0;
     for _iteration in 1..=20 {
         let mut next_state: Vec<char> = vec![];
-        for i in 0..(current_state.len() + 4) {
-            let cells = get_cells(&current_state, i - 2);
+        for i in 0..(current_state.len() + 2) {
+            let cells = get_cells(&current_state, i - 1);
             next_state.push(transform(&cells));
         }
         current_state = next_state.iter().collect::<String>();
-        start_index -= 2;
+        start_index -= 1;
         println!("{:?}", current_state);
     }
     println!(
