@@ -6,6 +6,35 @@ pub struct Position {
     pub y: isize,
 }
 
+#[derive(Debug, PartialEq, Eq, Hash, Clone)]
+pub enum Direction {
+    North,
+    East,
+    South,
+    West,
+}
+
+pub fn move_in_direction(pos: &Position, dir: &Direction) -> Position {
+    match dir {
+        Direction::North => Position {
+            x: pos.x,
+            y: pos.y - 1,
+        },
+        Direction::South => Position {
+            x: pos.x,
+            y: pos.y + 1,
+        },
+        Direction::East => Position {
+            x: pos.x + 1,
+            y: pos.y,
+        },
+        Direction::West => Position {
+            x: pos.x - 1,
+            y: pos.y,
+        },
+    }
+}
+
 pub fn manhattan_distance(x1: isize, y1: isize, x2: isize, y2: isize) -> usize {
     (x1 as isize - x2 as isize).abs() as usize + (y1 as isize - y2 as isize).abs() as usize
 }
