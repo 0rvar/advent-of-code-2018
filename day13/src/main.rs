@@ -16,6 +16,7 @@ struct Cart {
     position: Position,
     direction: Direction,
     turns: usize,
+    id: usize,
 }
 
 fn main() {
@@ -26,6 +27,7 @@ fn main() {
 
     let mut map: HashMap<Position, Track> = HashMap::new();
     let mut carts: Vec<Cart> = vec![];
+    let mut cart_id: usize = 0;
     for (y, line) in input.iter().enumerate() {
         for (x, value) in line.iter().enumerate() {
             if *value == b' ' || *value == b'\r' {
@@ -41,21 +43,37 @@ fn main() {
                     position: pos.clone(),
                     direction: Direction::South,
                     turns: 0,
+                    id: {
+                        cart_id += 1;
+                        cart_id - 1
+                    },
                 }),
                 b'^' => carts.push(Cart {
                     position: pos.clone(),
                     direction: Direction::North,
                     turns: 0,
+                    id: {
+                        cart_id += 1;
+                        cart_id - 1
+                    },
                 }),
                 b'<' => carts.push(Cart {
                     position: pos.clone(),
                     direction: Direction::West,
                     turns: 0,
+                    id: {
+                        cart_id += 1;
+                        cart_id - 1
+                    },
                 }),
                 b'>' => carts.push(Cart {
                     position: pos.clone(),
                     direction: Direction::East,
                     turns: 0,
+                    id: {
+                        cart_id += 1;
+                        cart_id - 1
+                    },
                 }),
                 _ => {}
             };
@@ -82,7 +100,8 @@ fn main() {
 
     {
         let mut carts: Vec<Cart> = carts.clone();
-        'it: for iteration in 1.. {
+        let mut dead_carts = HashSet::new();
+        'it: for _iteration in 1.. {
             carts.sort_by_key(|c| (c.position.x, c.position.y));
             let mut next_carts: Vec<Cart> = vec![];
             for (cart_index, cart) in carts.iter().enumerate() {
@@ -111,66 +130,49 @@ fn main() {
                     },
                 };
 
-                let collision_in_next = next_carts[0..cart_index]
-                    .iter()
-                    .find(|c| c.position == next_position)
-                    .is_some();
-                let collision_in_prev = carts[(cart_index + 1)..]
-                    .iter()
-                    .find(|c| c.position == next_position)
-                    .is_some();
-                if collision_in_next || collision_in_prev {
-                    println!("Part 1: {},{}", next_position.x, next_position.y);
-                    break 'it;
+                if !dead_carts.contains(&cart.id) {
+                    let collision_in_next = next_carts[0..cart_index]
+                        .iter()
+                        .find(|c| !dead_carts.contains(&c.id) && c.position == next_position);
+                    let collision_in_prev = carts[(cart_index + 1)..]
+                        .iter()
+                        .find(|c| !dead_carts.contains(&c.id) && c.position == next_position);
+                    if collision_in_next.is_some() || collision_in_prev.is_some() {
+                        if dead_carts.len() == 0 {
+                            println!("Part 1: {},{}", next_position.x, next_position.y);
+                        }
+                        if let Some(c) = collision_in_next {
+                            dead_carts.insert(c.id);
+                        }
+                        if let Some(c) = collision_in_prev {
+                            dead_carts.insert(c.id);
+                        }
+                        dead_carts.insert(cart.id);
+                    }
                 }
-
                 next_carts.push(Cart {
                     position: next_position,
                     direction: next_direction,
                     turns: next_turns,
+                    id: cart.id,
                 });
             }
 
-            for y in 0..input.len() {
-                for x in 0..input[0].len() {
-                    let pos = Position {
-                        x: x as isize,
-                        y: y as isize,
-                    };
-                    if let Some(c) = next_carts.iter().find(|c| c.position == pos) {
-                        print!(
-                            "\x1b[1m\x1b[92m{}\x1b[0m",
-                            match c.direction {
-                                Direction::North => "^",
-                                Direction::South => "v",
-                                Direction::East => ">",
-                                Direction::West => "<",
-                            }
-                        );
-                    } else if let Some(t) = map.get(&pos) {
-                        print!(
-                            "{}",
-                            match t {
-                                Track::Horizontal => "-",
-                                Track::Vertical => "|",
-                                Track::Crossing => "+",
-                                Track::PositiveTurn => "/",
-                                Track::NegativeTurn => "\\",
-                            }
-                        );
-                    } else {
-                        print!(" ");
-                    }
-                }
-                println!();
+            next_carts = next_carts
+                .iter()
+                .filter(|c| !dead_carts.contains(&c.id))
+                .map(|c| c.clone())
+                .collect::<Vec<Cart>>();
+
+            if next_carts.len() == 1 {
+                println!(
+                    "Part 2: {},{}",
+                    next_carts[0].position.x, next_carts[0].position.y
+                );
+                break 'it;
             }
-            println!("========================");
-            println!();
 
             carts = next_carts;
-
-            // use std::io;
-            // io::stdin().read_line(&mut String::new());
         }
     }
 }
