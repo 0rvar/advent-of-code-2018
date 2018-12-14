@@ -1,5 +1,3 @@
-use shared::*;
-
 fn transform(current: &str) -> char {
     match current {
         "..#.#" => '.',
