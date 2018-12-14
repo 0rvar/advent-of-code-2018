@@ -65,3 +65,15 @@ where
     let new_now = Instant::now();
     println!("{}: {} ({:?})", tag, result, new_now.duration_since(now));
 }
+
+pub fn get_digits(n: usize) -> Vec<usize> {
+    let mut digits = Vec::new();
+    let mut n = n;
+    while n > 9 {
+        digits.push(n % 10);
+        n = n / 10;
+    }
+    digits.push(n);
+    digits.reverse();
+    digits
+}

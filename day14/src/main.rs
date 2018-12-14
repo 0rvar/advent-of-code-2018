@@ -17,11 +17,8 @@ fn num_recipes_until(recipe_match: &str) -> usize {
         let current_a_recipe = recipes[a];
         let current_b_recipe = recipes[b];
         {
-            let mut new_recipes: Vec<usize> = (current_a_recipe + current_b_recipe)
-                .to_string()
-                .chars()
-                .map(|x| x.to_string().parse::<usize>().unwrap())
-                .collect::<Vec<_>>();
+            let mut new_recipes: Vec<usize> =
+                shared::get_digits(current_a_recipe + current_b_recipe);
 
             if recipes.len() > recipe_match.len() {
                 for i in 0..new_recipes.len() {
@@ -66,11 +63,8 @@ fn recipes_after(n: usize) -> String {
         let current_a_recipe = recipes[a];
         let current_b_recipe = recipes[b];
         {
-            let mut new_recipes: Vec<usize> = (current_a_recipe + current_b_recipe)
-                .to_string()
-                .chars()
-                .map(|x| x.to_string().parse::<usize>().unwrap())
-                .collect::<Vec<_>>();
+            let mut new_recipes: Vec<usize> =
+                shared::get_digits(current_a_recipe + current_b_recipe);
             recipes.append(&mut new_recipes)
         }
         a = (a + 1 + current_a_recipe) % recipes.len();
