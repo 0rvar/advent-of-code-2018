@@ -9,7 +9,14 @@ fn main() {
     });
 }
 
-fn num_recipes_until(recipe_match: &str) -> usize {
+fn num_recipes_until(recipe_search: &str) -> usize {
+    let recipe_search_digits = recipe_search
+        .chars()
+        .map(|c| c.to_digit(10).unwrap() as usize)
+        .collect::<Vec<usize>>();
+    let mut reversed_recipe_search_digits = recipe_search_digits.clone();
+    reversed_recipe_search_digits.reverse();
+
     let mut a = 0;
     let mut b = 1;
     let mut recipes: Vec<usize> = vec![3, 7];
@@ -20,23 +27,20 @@ fn num_recipes_until(recipe_match: &str) -> usize {
             let mut new_recipes: Vec<usize> =
                 shared::get_digits(current_a_recipe + current_b_recipe);
 
-            if recipes.len() > recipe_match.len() {
-                for i in 0..new_recipes.len() {
-                    let hypothetical_suffix = new_recipes
-                        .iter()
-                        .take(i)
-                        .map(|x| x.to_string())
-                        .collect::<String>();
-                    let before = recipes.len() - recipe_match.len() + i;
-                    let hypothetical_prefix = recipes
-                        .iter()
-                        .skip(before)
-                        .map(|x| x.to_string())
-                        .collect::<String>();
-                    let maybe_match = hypothetical_prefix + &hypothetical_suffix;
-                    if maybe_match == recipe_match {
-                        return before;
+            if recipes.len() > recipe_search_digits.len() {
+                'search: for from_new in 0..new_recipes.len() {
+                    for (index, search_digit) in reversed_recipe_search_digits.iter().enumerate() {
+                        let reference_digit = if index <= from_new {
+                            new_recipes[from_new - index]
+                        } else {
+                            recipes[recipes.len() - index + from_new]
+                        };
+                        if reference_digit != *search_digit {
+                            continue 'search;
+                        }
                     }
+                    let recipes_before = recipes.len() - recipe_search_digits.len() + from_new + 1;
+                    return recipes_before;
                 }
             }
 
