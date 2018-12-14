@@ -54,3 +54,14 @@ pub fn get_number_match(capture: &Captures<'_>, index: usize) -> usize {
 pub fn get_string_match<'l>(capture: &Captures<'l>, index: usize) -> &'l str {
     capture.get(index).unwrap().as_str()
 }
+
+pub fn report_result_with_measurement<F>(tag: &str, func: F)
+where
+    F: Fn() -> String,
+{
+    use std::time::Instant;
+    let now = Instant::now();
+    let result = func();
+    let new_now = Instant::now();
+    println!("{}: {} ({:?})", tag, result, new_now.duration_since(now));
+}

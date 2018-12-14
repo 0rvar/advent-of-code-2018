@@ -1,8 +1,12 @@
 fn main() {
     let input = 765071;
 
-    println!("Part 1: {}", recipes_after(input));
-    println!("Part 2: {}", num_recipes_until(&input.to_string()));
+    shared::report_result_with_measurement("Part 1", || {
+        format!("{} recipes", recipes_after(input))
+    });
+    shared::report_result_with_measurement("Part 2", || {
+        format!("{} recipes", num_recipes_until(&input.to_string()))
+    });
 }
 
 fn num_recipes_until(recipe_match: &str) -> usize {
